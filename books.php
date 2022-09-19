@@ -1,69 +1,30 @@
 <?php
 
-
-session_start();
-
-include("connection.php");
-include("functions.php");
-
 require 'header.php';
+require_once 'bootstrap.php';
 
-//post books to db
-if ($_SERVER['REQUEST_METHOD'] == "POST")//if user has clicked on post button
-{
-//sth was posted
+$container = new Container($configuration);
+$bookService = $container->getBookService();
+
+
+$id = $_REQUEST['id'];
+if (isset($_POST['submit'])) {
     $title = $_POST['title'];
     $author = $_POST['author'];
     $pages = $_POST['pages'];
-    $isbn = $_POST['ISBN'];
-    $prodDate = $_POST['productionDate'];
+    $ISBN = $_POST['ISBN'];
+    $productionDate = $_POST['productionDate'];
+    $bookService->addBook($title, $author, $pages, $ISBN, $productionDate);
+    header('Location:booksView.php');
 
-
-    if (!empty($title) && !empty($author) && !empty($pages) && !empty($isbn) && !empty($prodDate)) {
-        //save to db
-        $query = "insert into books (title, author, pages, ISBN, productionDate) values ('$title','$author','$pages','$isbn','$prodDate')";
-
-
-        mysqli_query($con, $query);
-        header("Location: index.php");
-        die;
-    } else {
-        echo 'please enter the info';
-
-    }
+} else if (isset($_POST['update'])) {
+    $title = $_POST['title'];
+    $author = $_POST['author'];
+    $pages = $_POST['pages'];
+    $ISBN = $_POST['ISBN'];
+    $productionDate = $_POST['productionDate'];
+    $bookService->updateBookInfo($title, $author, $pages, $ISBN, $productionDate);
 }
-////save the form data into the books.json
-//if (isset($_POST['submit'])){  //check if the user has pressed the submit button
-//    $newBook = array(  //there is a post request so we are creating an array
-//
-//            'title' => $_POST['title'],
-//            'author'=>$_POST['author'],
-//            'pages'=>$_POST['pages'],
-//            'isbn'=>$_POST['isbn'],
-//            'prodDate'=>$_POST['prodDate']
-//    );
-//
-//    if (filesize('books.json') == 0){ //checking if the books.json file is empty or has stored books in it //== 0 means zero bytes.
-//
-//        $first_record = array($newBook);//create an array inside json file to hold he books
-//
-//        $dataTOSave=$first_record; // assign the record to a generic variable for later use
-//
-//    }else{//if there are already stored books
-//        $old_books = json_decode(file_get_contents("books.json"));//we have to decode the data in order to use them
-//        array_push($old_books, $newBook);//add to the array the new book
-//        $dataTOSave =$old_books; //assign the data to the generic variable
-//    }
-//
-//    if (!file_put_contents("books.json", json_encode($dataTOSave), JSON_PRETTY_PRINT)){ //store data to books.json //function to encode the data so we can store them back to the file
-//        $error= 'try again';//if sth goes wrong
-//
-//    }else{
-//        $success='book is stored successfully';
-//    }
-//}
-
-
 ?>
 
 <h1>Add books</h1>
@@ -72,39 +33,44 @@ if ($_SERVER['REQUEST_METHOD'] == "POST")//if user has clicked on post button
 <div class="tab-content">
     <div class="tab-panel" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
 
-        <form method="post">
+        <form method="post" action="">
 
             <div class="container1">
                 <div class="form-outline mb-4">
                     <label class="form-label" for="bookTitle">Title </label>
-                    <input type="text" id="bookTitle" class="form-control" name="title"/>
+                    <input type="text" id="bookTitle" class="form-control" value='<?= $_REQUEST['title'] ?>'
+                           name="title"/>
                 </div>
 
 
                 <div class="form-outline mb-4">
                     <label class="form-label" for="bookAuthor">Author</label>
-                    <input type="text" id="bookAuthor" class="form-control" name="author"/>
+                    <input type="text" id="bookAuthor" class="form-control" value='<?= $_REQUEST['author'] ?>'
+                           name="author"/>
                 </div>
                 <div class="form-outline mb-4">
                     <label class="form-label" for="bookPages">Pages </label>
-                    <input type="number" id="bookPages" class="form-control" name="pages"/>
+                    <input type="number" id="bookPages" class="form-control" value='<?= $_REQUEST['pages'] ?>'
+                           name="pages"/>
                 </div>
 
 
                 <div class="form-outline mb-4">
                     <label class="form-label" for="bookISBN">ISBN</label>
-                    <input type="number" id="bookISBN" class="form-control" name="ISBN"/>
+                    <input type="number" id="bookISBN" class="form-control" value='<?= $_REQUEST['ISBN'] ?>'
+                           name="ISBN"/>
                 </div>
                 <div class="form-outline mb-4">
                     <label class="form-label" for="bookProdDate"> Production Date</label>
-                    <input type="date" id="bookProdDate" class="form-control" name="productionDate"/>
+                    <input type="date" id="bookProdDate" class="form-control" value='<?= $_REQUEST['productionDate'] ?>'
+                           name="productionDate"/>
                 </div>
 
 
                 <br>
 
                 <button type="submit" name="submit" class="btn btn-primary btn-block mb-4">Add a book</button>
-
+                <button type="submit" name="update" class="btn btn-primary btn-block mb-4">Update book</button>
 
 
             </div>

@@ -1,10 +1,18 @@
 <?php
-session_start();
-include "connection.php";
-include "functions.php";
 
 require 'header.php';
-$user_data = check_login($con);
+require_once 'bootstrap.php';
+
+
+$container = new Container($configuration);
+$userService = $container->getUserService();
+$user1 = $userService->getUsers();
+
+if (isset($_POST['delete'])) {
+    $userService->deleteUser($_POST['id']);
+
+}
+
 
 
 ?>
@@ -15,79 +23,44 @@ $user_data = check_login($con);
 <head>
     <title>My website</title>
 </head>
-<body>
-
-<h1>This is the index page</h1>
-
-<br>
-Hello, <?php echo $user_data['username'] ?>
-
-
 <div class="table-responsive">
     <table class="table table-bordered">
+        <h1>This is the users page</h1>
+
+        <br>
         <tr>
-            <th>Book title</th>
-            <th>author</th>
-            <th>pages</th>
-            <th>isbn</th>
-            <th>publication date</th>
+            <th>Name</th>
+            <th>Username</th>
+            <th>Email</th>
         </tr>
-
-
-
-        <!--from json to index shown - the data-->
-        <!--        --><?php
-        //
-        //        $data = file_get_contents('books.json');
-        //        $data = json_decode($data, true);
-        //        foreach ($data as $item) {
-        //
-        //            echo '<tr>';
-        //            echo '<td>' . $item['title'] . '</td>';
-        //            echo '<td>' . $item['author'] . '</td>';
-        //            echo '<td>' . $item['pages'] . '</td>';
-        //            echo '<td>' . $item['isbn'] . '</td>';
-        //            echo ' <td>' .$item['prodDate'] . ' </td> ';
-        //
-        //            echo '</tr > ';
-        //
-        //        }
-        //
-        //        ?>
-
-
         <?php
+        foreach ($user1 as $item) { ?>
+            <form action='usersUpdated.php' method="POST">
+                <tr>
+                    <td> <?php echo $item->getName(); ?></td>
+                    <td> <?php echo $item->getUsername(); ?></td>
+                    <td> <?php echo $item->getEmail(); ?> </td>
+
+                    <input type="hidden" name="id" value='<?= $item->getId(); ?>'/>
+                    <input type="hidden" name="name" value='<?= $item->getName(); ?>'/>
+                    <input type="hidden" name="username" value='<?= $item->getUsername(); ?>'/>
+                    <input type="hidden" name="email" value='<?= $item->getEmail(); ?>'/>
 
 
+                    <td>
+                        <input class="btn btn-primary" type="submit" name="edit">
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" name="delete">Delete</button>
+                    </td>
 
-            //get/retrieve books from db
-            $query = "select * from books ";
-
-            $result = mysqli_query($con, $query);
-
-
-            if ($result && mysqli_num_rows($result) > 0) {
-
-                while($books_data = mysqli_fetch_assoc($result)) {
-
-                        echo "<tr>";
-                        echo "<td>" . $books_data["title"] . "</td>";
-                        echo "<td>" . $books_data["author"] . "</td>";
-                        echo "<td>" . $books_data["pages"] . "</td>";
-                        echo "<td>" . $books_data["ISBN"] . "</td>";
-                        echo "<td>" . $books_data["productionDate"] . "</td>";
-                        echo "<td><a class='btn btn-danger' href='d.php?deleteid=".$books_data['id']."'> Delete</a></td>";
-                        echo "</tr>";
-                    }
-
-            }
-
-
-
-
-        ?>
+                </tr>
+            </form>
+        <?php } ?>
 
     </table>
+    <a href="booksView.php"> go to books</a>
+    <a href="books.php"> register books</a>
 </div>
 
 </body>

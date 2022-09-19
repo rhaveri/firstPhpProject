@@ -1,43 +1,14 @@
 <?php
 require 'header.php';
-session_start();
-
-include ("connection.php");
-include ("functions.php");
-
-if ($_SERVER['REQUEST_METHOD'] == "POST")//if user has clicked on post button
-{
-    //sth was posted
-
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-
-    if (!empty($email) && !empty($password)) {
-        //read from db
-        $query = "select * from user where email = '$email' limit 1";
+require 'bootstrap.php';
 
 
-        $result = mysqli_query($con, $query);
-        if ($result) {
-            if ($result && mysqli_num_rows($result) > 0) {
+$container = new Container($configuration);
+if(isset($_POST['submit'])){
+    $userServicr = $container->getUserService();
+    $userServicr->log_in();
 
-                $user_data = mysqli_fetch_assoc($result);
-
-                if ($user_data['password'] === $password) {
-
-                    $_SESSION['user_id'] = $user_data['user_id'];
-                    header("Location: index.php");
-                    die;
-                }
-            }
-        }
-
-        echo "wrong username or password!";
-    } else {
-        echo "wrong username or password!";
-    }
 }
-
 ?>
 
 <h1>Log in</h1>
@@ -72,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST")//if user has clicked on post button
                 </div>
 
                 <!-- Submit button -->
-                <button type="submit" class="btn btn-primary btn-block mb-4">Log in</button>
+                <button type="submit" class="btn btn-primary btn-block mb-4" name="submit">Log in</button>
 
                 <!-- Register buttons -->
                 <div class="text-center">

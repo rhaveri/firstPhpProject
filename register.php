@@ -1,32 +1,22 @@
 <?php
-session_start();
-include ("connection.php");
-include ("functions.php");
-
 require 'header.php';
+require 'bootstrap.php';
 
-if ($_SERVER['REQUEST_METHOD'] == "POST")//if user has clicked on post button
-{
-    //sth was posted
-    $name= $_POST['name'];
-    $username=  $_POST['username'];
-    $email=  $_POST['email'];
-    $password=  $_POST['password'];
+//if ($_SERVER['REQUEST_METHOD'] == "POST")//if user has clicked on post button
+//{
+//    //sth was posted
+//    $name= $_POST['name'];
+//    $username=  $_POST['username'];
+//    $email=  $_POST['email'];
+//    $password=  $_POST['password'];
+//    $passwordRepeat=  $_POST['passwordR'];
 
-    if (!empty($name) && !empty($username) && !empty($email) && !empty($password) ){
-        //save to db
-        $user_id = random_num(20);
-        $query = "insert into user (user_id,name,username,email,password) values ('$user_id','$name','$username','$email','$password')";
-
-
-        mysqli_query($con,$query);
-        header("Location: login.php");
-        die;
-    }else{
-        echo 'please enter the info';
-
+$container = new Container($configuration);
+$userService = $container->getUserService();
+    if(isset($_POST['submit'])){
+        $userService->register_person();
     }
-}
+
 
 
 ?>
