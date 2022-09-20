@@ -8,11 +8,6 @@ $container = new Container($configuration);
 $userService = $container->getUserService();
 $user1 = $userService->getUsers();
 
-if (isset($_POST['delete'])) {
-    $userService->deleteUser($_POST['id']);
-
-}
-
 
 
 ?>

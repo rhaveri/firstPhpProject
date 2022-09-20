@@ -25,6 +25,10 @@ if (isset($_POST['submit'])) {
     $productionDate = $_POST['productionDate'];
     $bookService->updateBookInfo($title, $author, $pages, $ISBN, $productionDate);
 }
+else if (isset($_POST['delete'])) {//variable passed through url,
+    $bookService->deleteBook($_POST['id']);
+}
+
 ?>
 
 <h1>Add books</h1>

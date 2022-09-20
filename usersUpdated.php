@@ -15,6 +15,12 @@ if (isset($_POST['update'])) {
 }
 
 
+else if (isset($_POST['delete'])) {
+    $userService->deleteUser($_POST['id']);
+
+}
+
+
 ?>
 <h1>Update a user</h1>
 <div class="tab-content">

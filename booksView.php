@@ -7,10 +7,7 @@ $bookService = $container->getBookService();
 $books = $bookService->getBooks();
 
 
-if (isset($_POST['delete'])) {//variable passed through url,
-        $bookService->deleteBook($_POST['id']);
 
-}
 
 ?>
 
