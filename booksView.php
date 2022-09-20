@@ -6,11 +6,7 @@ $container = new Container($configuration);
 $bookService = $container->getBookService();
 $books = $bookService->getBooks();
 
-
-
-
 ?>
-
 
 <!DOCTYPE html>
 <html>
@@ -36,7 +32,7 @@ $books = $bookService->getBooks();
 
         <?php
         foreach ($books as $book) { ?>
-            <form action='booksView.php' method="POST">
+            <form action='booksUpdate.php' method="POST">
 <tr>
                 <td> <?php echo $book->getTitle(); ?> </td>
                 <td><?php echo $book->getAuthor(); ?> </td>

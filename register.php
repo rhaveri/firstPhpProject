@@ -2,22 +2,11 @@
 require 'header.php';
 require 'bootstrap.php';
 
-//if ($_SERVER['REQUEST_METHOD'] == "POST")//if user has clicked on post button
-//{
-//    //sth was posted
-//    $name= $_POST['name'];
-//    $username=  $_POST['username'];
-//    $email=  $_POST['email'];
-//    $password=  $_POST['password'];
-//    $passwordRepeat=  $_POST['passwordR'];
-
 $container = new Container($configuration);
 $userService = $container->getUserService();
     if(isset($_POST['submit'])){
         $userService->register_person();
     }
-
-
 
 ?>
 

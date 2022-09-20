@@ -101,7 +101,16 @@ class UserService
         $stmt->bindParam('email',$email);
         $stmt->bindParam('password', $password);
         $stmt->execute();
-
+        $count = $stmt->rowCount();
+        $row = $stmt->fetchAll();
+        $user_data = $row[0];
+        if($count == 1){
+            $_SESSION['userName'] = $user_data['userName'];
+            header("Location: index.php");
+        }else{
+            echo "Wrong password or userName";
+            header("Location: login.php");
+        }
     }
 
     public function register_person()
@@ -116,6 +125,7 @@ class UserService
 
         $stmt = $this->pdo->prepare($query);
         $stmt->execute([$name, $username, $email,$password]);
+        header('Location: login.php');
     }
 
 

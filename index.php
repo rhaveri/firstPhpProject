@@ -43,7 +43,7 @@ $user1 = $userService->getUsers();
 
 
                     <td>
-                        <input class="btn btn-primary" type="submit" name="edit">
+                        <input class="btn btn-primary" type="submit" name="edit" value="Edit"/>
                     </td>
                     <td>
                         <button class="btn btn-danger" name="delete">Delete</button>

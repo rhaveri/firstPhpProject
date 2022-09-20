@@ -9,7 +9,6 @@ class BookService
     public function __construct(PDO $pdo){
         $this->pdo= $pdo;
     }
-    private $bookArray;
 
     public function getBooks()
     {
@@ -42,11 +41,11 @@ class BookService
         header('Location:booksView.php');
     }
 
-    public function addBook($title, $author, $pages, $ISBN, $productionDate){
+    public function addBook($id,$title, $author, $pages, $ISBN, $productionDate){
         $pdo = $this->getPDO();
-        $statement = $pdo->prepare('INSERT INTO books (title, author, pages, ISBN, productionDate) VALUES (?,?,?,?,?)');
+        $statement = $pdo->prepare('INSERT INTO books (id,title, author, pages, ISBN, productionDate) VALUES (?,?,?,?,?,?)');
 
-        $statement->execute([$title, $author, $pages, $ISBN, $productionDate]);
+        $statement->execute([$id, $title, $author, $pages, $ISBN, $productionDate]);
         $bookArray = $statement->fetch(PDO::FETCH_ASSOC);
 
 
@@ -56,8 +55,7 @@ class BookService
 
         $this->bookArray = $bookArray;
 
-
-
+        header('Location: booksView.php');
 
     }
 
@@ -70,7 +68,7 @@ class BookService
         $statement->bindParam('author',$author);
         $statement->bindParam('pages',$pages);
         $statement->bindParam('ISBN',$ISBN);
-        $statement->bindParam('$productionDate',$$productionDate);
+        $statement->bindParam('productionDate',$productionDate);
 
         $statement->execute();
         header("Location: booksView.php");
@@ -101,7 +99,13 @@ class BookService
     }
 
     public function getPDO(){
+        if ($this->pdo === null) {
+            //create new pdo object
+            $pdo = new PDO('mysql:host=localhost;dbname=rei', 'root');
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+            $this->pdo = $pdo; //assign this to the pdo property
+        }
         return $this->pdo;
     }
 }

@@ -19,15 +19,14 @@ else if (isset($_POST['delete'])) {
     $userService->deleteUser($_POST['id']);
 
 }
-
-
 ?>
+
 <h1>Update a user</h1>
 <div class="tab-content">
     <div class="tab-panel" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
 
 
-        <form action='usersUpdated.php' method="POST">
+        <form action="usersUpdated.php" method="POST">
 
             <div class="container1">
 
@@ -55,7 +54,7 @@ else if (isset($_POST['delete'])) {
 
 
 
-                <input type="submit" class="btn btn-primary" name="update"/>
+                <input type="submit" class="btn btn-primary" name="update" value="Update"/>
             </div>
 
         </form>
